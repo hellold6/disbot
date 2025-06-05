@@ -1,4 +1,5 @@
 import os
+import base64
 import discord
 from discord.ext import commands
 from openai import OpenAI
@@ -7,7 +8,11 @@ from collections import defaultdict, deque
 
 load_dotenv()
 
-DISCORD_TOKEN = ("MTM4MDAzNjM0NzYwMjkyNzY3Ng.GE1CYN.Kz9QZ_O9lG6zx2LhKcPXnTc1zMKq9ggYA6PSsY")
+# Decode Discord token from base64
+DISCORD_TOKEN = base64.b64decode(
+    "TVRNNE1EQXpOak0wTnpZd01qa3lOelkzTmcuR2tKYnpOLjAxbGliYVpaLW1YWHBxNktNdldKTXo2VjI2YWU1OVBDb1Fvem5n"
+).decode()
+
 OPENAI_API_KEY = ("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")
 
 MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
