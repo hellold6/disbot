@@ -3,10 +3,7 @@ import base64
 import discord
 from discord.ext import commands
 from openai import OpenAI
-from dotenv import load_dotenv
 from collections import defaultdict, deque
-
-load_dotenv()
 
 # Decode Discord token from base64
 DISCORD_TOKEN = base64.b64decode(
@@ -64,6 +61,7 @@ async def on_message(message):
             conversation_history[user_id].append({"role": "assistant", "content": reply})
             await message.reply(reply)
         except Exception as e:
+            print(f"OpenAI API error: {e}")  # Print the error for debugging
             await message.reply("Sorry, there was an error processing your request.")
 
 bot.run(DISCORD_TOKEN)
