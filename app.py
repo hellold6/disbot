@@ -7,7 +7,7 @@ from collections import defaultdict, deque
 
 load_dotenv()
 
-DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+DISCORD_TOKEN = ("MTM4MDAzNjM0NzYwMjkyNzY3Ng.GE1CYN.Kz9QZ_O9lG6zx2LhKcPXnTc1zMKq9ggYA6PSsY")
 OPENAI_API_KEY = ("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")
 
 MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
