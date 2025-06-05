@@ -1,19 +1,14 @@
 import os
-import base64
 import discord
 from discord.ext import commands
 from openai import OpenAI
 from collections import defaultdict, deque
 
-# Decode Discord token from base64
-DISCORD_TOKEN = base64.b64decode(
-    "TVRNNE1EQXpOak0wTnpZd01qa3lOelkzTmcuR2tKYnpOLjAxbGliYVpaLW1YWHBxNktNdldKTXo2VjI2YWU1OVBDb1Fvem5n"
-).decode()
-
-# Encode your OpenAI API key in base64 and paste it here
-OPENAI_API_KEY = base64.b64decode(
-    "c2stcHJvai1RRFViMGhmemNkUDRkeFBIc1Z0YnB0ZkdHbXFhTkF5VDVuMDBMaWZBc2t5Vi1Ta1JqbHJNSDdZbDZCeGt6WW9NNlBZZTBXNElPSVQzQmxiRkoxZFliRVlnclZobzJwRWh3MklhcjJrLVZ3VzZmc3JJb215OXo4STU2Z0s3Mm1ZcVg3dzBPY3FUY054UEtaQ1hqc3k0dkl4cHdB"
-).decode()
+# Get Discord token and OpenAI API key from environment variables
+DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+if not DISCORD_TOKEN or not OPENAI_API_KEY:
+    raise RuntimeError("DISCORD_TOKEN and OPENAI_API_KEY environment variables must be set.")
 
 MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
 
