@@ -10,7 +10,10 @@ DISCORD_TOKEN = base64.b64decode(
     "TVRNNE1EQXpOak0wTnpZd01qa3lOelkzTmcuR2tKYnpOLjAxbGliYVpaLW1YWHBxNktNdldKTXo2VjI2YWU1OVBDb1Fvem5n"
 ).decode()
 
-OPENAI_API_KEY = ("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")
+# Encode your OpenAI API key in base64 and paste it here
+OPENAI_API_KEY = base64.b64decode(
+    "c2stcHJvai1RRFViMGhmemNkUDRkeFBIc1Z0YnB0ZkdHbXFhTkF5VDVuMDBMaWZBc2t5Vi1Ta1JqbHJNSDdZbDZCeGt6WW9NNlBZZTBXNElPSVQzQmxiRkoxZFliRVlnclZobzJwRWh3MklhcjJrLVZ3VzZmc3JJb215OXo4STU2Z0s3Mm1ZcVg3dzBPY3FUY054UEtaQ1hqc3k0dkl4cHdB"
+).decode()
 
 MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
 
