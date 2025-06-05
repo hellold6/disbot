@@ -10,7 +10,7 @@ DISCORD_TOKEN = base64.b64decode(
     "TVRNNE1EQXpOak0wTnpZd01qa3lOelkzTmcuR2tKYnpOLjAxbGliYVpaLW1YWHBxNktNdldKTXo2VjI2YWU1OVBDb1Fvem5n"
 ).decode()
 
-OPENAI_API_KEY = ("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")
+OPENAI_API_KEY = ("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")
 
 MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
 
