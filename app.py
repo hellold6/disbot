@@ -68,7 +68,7 @@ async def on_message(message):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": prompt or "What's in this image?"},
+                    {"type": "text", "text": prompt or "What's in this image? If it is a meme, please describe it. If it is a photo, please describe and rate the person OBJECTIVELY based on looks."},
                     {"type": "image_url", "image_url": {"url": image_url}},
                 ]
             }
@@ -76,7 +76,12 @@ async def on_message(message):
     else:
         model = TEXT_MODEL
         conversation_history[user_id].append({"role": "user", "content": prompt})
-        messages = list(conversation_history[user_id])
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful, funny, slightly chaotic assistant. Be casual and weird, but always make sense."
+            }
+        ] + list(conversation_history[user_id])
 
     try:
         start = time.time()
