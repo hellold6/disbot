@@ -134,27 +134,34 @@ async def on_message(message):
         print(f"OpenAI API error: {e}")
         await message.reply("Sorry, there was an error processing your request.")
 
-# Register the /time slash command
 @bot.tree.command(name="time", description="Show the current time for all users.")
 async def time_command(interaction: discord.Interaction):
-    await interaction.response.defer()  # Defer immediately!
+    await interaction.response.defer()
 
     current_times = []
     guild = interaction.guild
-    if guild is None:
-        # Try to fetch the guild from the channel if not present
-        channel = interaction.channel
-        if hasattr(channel, 'guild') and channel.guild is not None:
-            guild = channel.guild
+
+    if guild is None and hasattr(interaction.channel, 'guild'):
+        guild = interaction.channel.guild
+
     for user_id, timezone in USERS.items():
         user_timezone = pytz.timezone(timezone)
         user_time = datetime.datetime.now(user_timezone).strftime('%I:%M %p, %A, %B %d, %Y')
+
         display_name = f"User {user_id}"
+
         if guild is not None:
             member = guild.get_member(user_id)
+            if not member:
+                try:
+                    member = await guild.fetch_member(user_id)
+                except discord.NotFound:
+                    member = None
             if member:
                 display_name = member.display_name
+
         current_times.append(f"🌍 **{display_name}'s Current Time**: {user_time} ({timezone})")
+
     await interaction.followup.send("Here are the current times for everyone:\n" + "\n".join(current_times))
 
 # Register the /help slash command
