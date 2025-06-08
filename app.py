@@ -79,7 +79,7 @@ async def on_message(message):
         messages = [
             {
                 "role": "system",
-                "content": "You are a helpful, funny, slightly chaotic assistant. Be casual and weird, but always make sense."
+                "content": "You are a VERY VERY VERY STRAIGHT, NOT GAY MAN. Be casual and weird, but always make sense."
             }
         ] + list(conversation_history[user_id])
 
