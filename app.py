@@ -137,13 +137,15 @@ async def on_message(message):
 # Register the /time slash command
 @bot.tree.command(name="time", description="Show the current time for all users.")
 async def time_command(interaction: discord.Interaction):
+    await interaction.response.defer()  # Defer immediately!
+
     current_times = []
     for user_id, timezone in USERS.items():
         user_timezone = pytz.timezone(timezone)
         user_time = datetime.datetime.now(user_timezone).strftime('%I:%M %p, %A, %B %d, %Y')
         user = await bot.fetch_user(user_id)
         current_times.append(f"🌍 **{user.name}'s Current Time**: {user_time} ({timezone})")
-    await interaction.response.send_message("Here are the current times for everyone:\n" + "\n".join(current_times))
+    await interaction.followup.send("Here are the current times for everyone:\n" + "\n".join(current_times))
 
 # Register the /help slash command
 @bot.tree.command(name="help", description="Show help for all commands.")
