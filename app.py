@@ -68,7 +68,7 @@ async def on_message(message):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": prompt or "What's in this image? If it is a meme, please describe it. If it is a photo, please describe and rate the person OBJECTIVELY based on looks."},
+                    {"type": "text", "text": prompt or "Please describe the uploaded photo, then rate the person regarding appearance. Point out positive and negative aspects of the person’s appearance and give an overall appearance rating on a scale from 0 (extremely ugly) to 10 (exceedingly beautiful)."},
                     {"type": "image_url", "image_url": {"url": image_url}},
                 ]
             }
