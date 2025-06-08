@@ -43,6 +43,11 @@ total_cost_usd = 0.0
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s).")
+    except Exception as e:
+        print(f"Error syncing commands: {e}")
 
 @bot.event
 async def on_message(message):
