@@ -4,6 +4,9 @@ from discord.ext import commands
 from openai import OpenAI
 from collections import defaultdict, deque
 import time
+import datetime
+import pytz
+from discord import app_commands
 
 # Environment variables
 DISCORD_TOKEN = os.environ.get("DISCORD_TOKEN")
@@ -14,6 +17,14 @@ if not DISCORD_TOKEN or not OPENAI_API_KEY:
 # Models
 TEXT_MODEL = "ft:gpt-3.5-turbo-0125:personal:will-impersonation:BevSmRCs"
 VISION_MODEL = "gpt-4o"
+
+#Users and their timezones
+USERS = {
+    1331254082379321445: 'Etc/GMT+4',  # Scar (updated)
+    1279572054445658196: 'Etc/GMT+5',  # Fox
+    1324151504071823511: 'Etc/GMT+4',  # Human
+}
+
 
 # Bot setup
 intents = discord.Intents.default()
@@ -117,5 +128,50 @@ async def on_message(message):
     except Exception as e:
         print(f"OpenAI API error: {e}")
         await message.reply("Sorry, there was an error processing your request.")
+
+# Register the /time slash command
+@bot.tree.command(name="time", description="Show the current time for all users.")
+async def time_command(interaction: discord.Interaction):
+    current_times = []
+    for user_id, timezone in USERS.items():
+        user_timezone = pytz.timezone(timezone)
+        user_time = datetime.datetime.now(user_timezone).strftime('%I:%M %p, %A, %B %d, %Y')
+        user = await bot.fetch_user(user_id)
+        current_times.append(f"🌍 **{user.name}'s Current Time**: {user_time} ({timezone})")
+    await interaction.response.send_message("Here are the current times for everyone:\n" + "\n".join(current_times))
+
+# Register the /help slash command
+@bot.tree.command(name="help", description="Show help for all commands.")
+async def help_command(interaction: discord.Interaction):
+    help_text = (
+        "**Available Commands:**\n"
+        "/time - Show the current time for all users.\n"
+        "/cost - Show the total OpenAI API cost spent so far.\n"
+        "/reset - Reset your conversation history.\n"
+        "/uptime - Show how long the bot has been running.\n"
+        "Mention or DM the bot with a message or image to chat with the AI."
+    )
+    await interaction.response.send_message(help_text)
+
+# Register the /cost slash command
+@bot.tree.command(name="cost", description="Show the total OpenAI API cost spent so far.")
+async def cost_command(interaction: discord.Interaction):
+    await interaction.response.send_message(f"Total OpenAI API cost so far: ${total_cost_usd:.4f}")
+
+# Register the /reset slash command
+@bot.tree.command(name="reset", description="Reset your conversation history.")
+async def reset_command(interaction: discord.Interaction):
+    user_id = interaction.user.id
+    conversation_history[user_id].clear()
+    await interaction.response.send_message("Your conversation history has been reset.")
+
+# Register the /uptime slash command
+bot_start_time = time.time()
+@bot.tree.command(name="uptime", description="Show how long the bot has been running.")
+async def uptime_command(interaction: discord.Interaction):
+    elapsed = int(time.time() - bot_start_time)
+    hours, remainder = divmod(elapsed, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    await interaction.response.send_message(f"Bot uptime: {hours}h {minutes}m {seconds}s")
 
 bot.run(DISCORD_TOKEN)
