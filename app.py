@@ -140,11 +140,13 @@ async def time_command(interaction: discord.Interaction):
     await interaction.response.defer()  # Defer immediately!
 
     current_times = []
+    guild = interaction.guild
     for user_id, timezone in USERS.items():
         user_timezone = pytz.timezone(timezone)
         user_time = datetime.datetime.now(user_timezone).strftime('%I:%M %p, %A, %B %d, %Y')
-        user = await bot.fetch_user(user_id)
-        current_times.append(f"🌍 **{user.name}'s Current Time**: {user_time} ({timezone})")
+        member = guild.get_member(user_id)
+        display_name = member.display_name if member else f"User {user_id}"
+        current_times.append(f"🌍 **{display_name}'s Current Time**: {user_time} ({timezone})")
     await interaction.followup.send("Here are the current times for everyone:\n" + "\n".join(current_times))
 
 # Register the /help slash command
