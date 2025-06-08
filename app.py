@@ -20,9 +20,9 @@ VISION_MODEL = "gpt-4o"
 
 #Users and their timezones
 USERS = {
-    1331254082379321445: 'Etc/GMT+4',  # Scar (updated)
-    1279572054445658196: 'Etc/GMT+5',  # Fox
-    1324151504071823511: 'Etc/GMT+4',  # Human
+    1331254082379321445: ('Scar', 'Etc/GMT+4'),  # Scar (updated)
+    1279572054445658196: ('Fox', 'Etc/GMT+5'),  # Fox
+    1324151504071823511: ('Human', 'Etc/GMT+4'),  # Human
 }
 
 
@@ -139,29 +139,10 @@ async def time_command(interaction: discord.Interaction):
     await interaction.response.defer()
 
     current_times = []
-    guild = interaction.guild
-
-    if guild is None and hasattr(interaction.channel, 'guild'):
-        guild = interaction.channel.guild
-
-    for user_id, timezone in USERS.items():
+    for user_id, (display_name, timezone) in USERS.items():
         user_timezone = pytz.timezone(timezone)
         user_time = datetime.datetime.now(user_timezone).strftime('%I:%M %p, %A, %B %d, %Y')
-
-        display_name = f"User {user_id}"
-
-        if guild is not None:
-            member = guild.get_member(user_id)
-            if not member:
-                try:
-                    member = await guild.fetch_member(user_id)
-                except discord.NotFound:
-                    member = None
-            if member:
-                display_name = member.display_name
-
         current_times.append(f"🌍 **{display_name}'s Current Time**: {user_time} ({timezone})")
-
     await interaction.followup.send("Here are the current times for everyone:\n" + "\n".join(current_times))
 
 # Register the /help slash command
